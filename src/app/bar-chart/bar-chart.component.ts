@@ -74,8 +74,10 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnChanges {
     this.svg = d3
       .select(element)
       .append('svg')
-      .attr('width', element.offsetWidth)
-      .attr('height', element.offsetHeight);
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .style('overflow', 'visible');
+
     this.tooltip = d3
       .select(element)
       .append('div')
@@ -136,6 +138,13 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnChanges {
     // remove exiting bars
     update.exit().remove();
 
+    if (this.chart.selectAll('.bar').empty()) {
+      this.svg
+        .attr('preserveAspectRatio', 'xMinYMin meet')
+        .attr('viewBox', `0 0 ${this.width} ${this.height}`) // For responsive chart
+        .style('overflow', 'visible');
+    }
+
     // update existing bars
     this.chart
       .selectAll('.bar')
@@ -169,8 +178,8 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnChanges {
         this.tooltip.transition().duration(100).style('opacity', 0.7);
         this.tooltip
           .text(`${d[0]} : ${d[1]}`)
-          .style('left', `${event?.pageX - 20}px`)
-          .style('top', `${event?.pageY}px`);
+          .style('left', `${event?.x - 20}px`)
+          .style('top', `${event?.y}px`);
         this.changeDetectorRef.detectChanges();
       });
   }
