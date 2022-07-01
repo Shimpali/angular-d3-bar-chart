@@ -178,8 +178,9 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnChanges {
         this.tooltip.transition().duration(100).style('opacity', 0.7);
         this.tooltip
           .text(`${d[0]} : ${d[1]}`)
-          .style('left', `${event?.x - 20}px`)
-          .style('top', `${event?.y}px`);
+          .style('left', `${event?.pageX - 20}px`)
+          .style('top', `${event?.pageY}px`);
+
         this.changeDetectorRef.detectChanges();
       });
   }
